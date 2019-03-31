@@ -4,6 +4,8 @@ from torch.nn.parameter import Parameter
 from torch.nn.modules.module import Module
 import torch.nn.functional as F
 
+# 2 LAYERS GCN AS EXPLAINED IN THE NOTEBOOK..
+
 
 class GraphConvolution(Module):
     

@@ -66,6 +66,7 @@ def sparse_mx_to_torch_sparse_tensor(sparse_mx):
 
 
 def adjacency_matrix_GCN(G, theta=1):
+    #  BUILDING ADJ MATRIX FOR GCN
     A = nx.to_scipy_sparse_matrix(G)
     A = A+A.T
     A += theta*sp.eye(A.shape[0])  #  Â = A + I
@@ -79,6 +80,7 @@ def adjacency_matrix_GCN(G, theta=1):
 
 
 def edge_list_SAGE():
+    #  CREATING EDGES LIST FOR SAGE
     A = pd.read_csv('./data/ppi_e.csv')
     return A.values.transpose()
 
@@ -114,56 +116,29 @@ def get_results(filename,prediction,X_test_df):
     y_pred_df = pd.DataFrame(y_pred, columns=["labels"], index=X_test_df.index)
     y_pred_df.to_csv(filename)
 
-    
-def ghorayeb(labels,prob,n):
-    ntr = labels.shape[0]
-    nte = prob.shape[0]
-    nl = prob.shape[1]
-    lmean = np.zeros(nl)
 
-    ltr = labels.copy()
-    idx = np.zeros((ltr.shape[0],1))
-    for i in range(idx.shape[0]):
-        idx[i] = i
-    ltr = np.concatenate((ltr,idx),axis=1)
-    lte = np.concatenate((prob,idx[range(prob.shape[0])]),axis=1)
-
-    for i in range(nl):
-        for j in range(ntr):
-            lmean[i] += labels[j][i]
-        lmean[i] = int(lmean[i]*nte//ntr)
-        lte = lte[lte[:,i].argsort()]
-        lte[:,i] = 0
-        if(lmean[i]*n > lte.shape[0]):
-            z = lte.shape[0]
-        else:
-            z= int(lmean[i]*n) 
-        for k in range(lte.shape[0]-z,lte.shape[0]):
-            lte[k,i] = 1
-    return lte[lte[:,nl].argsort()]
 
 
 def a_third_law(labels,p):
-    counter = np.zeros(122)
+    counter = np.zeros(labels.shape[0])
     for i in range(labels.shape[0]):
         for j in range(labels[i].shape[0]):
             if labels[i][j] == 1:
                 counter[j] += 1
     for i in range(counter.shape[0]):
-        if (counter[i] > 44906/3):
+        if counter[i] > labels.shape[0]/3 :
             counter[i] = 1
         else :
             counter[i] = 0
     
     for col in range(counter.shape[0]):
         for row in range(p.shape[0]):
-            if (counter[col] == 1 and p[row][col] != 1):
+            if (counter[col] == 1 and p[row][col] != 1) :
                 p[row][col] = 1
     return p
         
 
 def get_lmean(labels):
-    ntr = labels.shape[0]
     lmean = np.zeros((labels.shape[1],2))
     for i in range(labels.shape[1]):
         for j in range(labels.shape[0]):
