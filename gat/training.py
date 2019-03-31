@@ -4,6 +4,11 @@ import utils
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
+'''
+WE TRAIN OUR MODEL IN BATCHES AND USING CUDA.
+
+'''
+
 def train(model, train_loader):
     model.to(device)
     loss_op = torch.nn.BCEWithLogitsLoss()
@@ -25,13 +30,11 @@ def train(model, train_loader):
 
 def test(model, valid_loader):
     model.eval()
-
     total_micro_f1 = 0
     for data in valid_loader:
         with torch.no_grad():
             out = model(data.x.to(device), data.edge_index.to(device))
         pred = out.float().cpu() > 0
-        #pred = utils.a_third_law(data.y,pred)
         micro_f1 = metrics.f1_score(data.y, pred, average='micro')
         total_micro_f1 += micro_f1 * data.num_graphs
     return total_micro_f1 / len(valid_loader.dataset)

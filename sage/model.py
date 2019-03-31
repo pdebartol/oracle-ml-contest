@@ -8,18 +8,13 @@ from torch.nn.init import xavier_uniform_
 
 class SAGEConv(torch.nn.Module):
 
-    def __init__(self, in_channels, out_channels, normalize=True, bias=False):
+    def __init__(self, in_channels, out_channels, normalize=True):
         super(SAGEConv, self).__init__()
 
         self.in_channels = in_channels
         self.out_channels = out_channels
         self.normalize = normalize
         self.weight = Parameter(torch.Tensor(self.in_channels, out_channels))
-
-        if bias:
-            self.bias = Parameter(torch.Tensor(out_channels))
-        else:
-            self.register_parameter('bias', None)
 
         self.reset_parameters()
 
@@ -35,10 +30,7 @@ class SAGEConv(torch.nn.Module):
         row, col = edge_index
 
         x = torch.matmul(x, self.weight)
-        out = scatter_mean(x[col], row, dim=0, dim_size=x.size(0))
-
-        if self.bias is not None:
-            out = out + self.bias
+        out = scatter_mean(x[col], row, dim=0, dim_size=x.size(0))  # MEAN AGGREGATOR
 
         if self.normalize:
             out = F.normalize(out, p=2, dim=-1)

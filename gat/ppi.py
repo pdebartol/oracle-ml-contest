@@ -9,6 +9,18 @@ from networkx.readwrite import json_graph
 from torch_geometric.data import InMemoryDataset, Data
 from torch_geometric.utils import remove_self_loops
 
+'''
+HERE WE BUILD A DATASET THAT WILL HELP US IMPLEMENT GAT.
+
+WE KNOW THAT OUR GRAPH IS COMPOSED OF 24 SUBGRAPH.
+
+WE BUILD A TRAINING SET OF 18 SUBGRAPHS, A VALIDATION OF 2 SUBGRAPHS 
+
+WHILE  OUR TEST SET IS MADE OF 4 SUBGRAPHS.
+
+'''
+
+
 
 class PPI(InMemoryDataset):
 
