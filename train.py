@@ -2,6 +2,12 @@ import tqdm
 import torch
 from torch import nn
 
+'''
+
+STANDARD TRAINING ROUTINE FOR GCN AND SAGE
+
+'''
+
 
 def train_model(model, X, A,labels, idx_train, epochs, lr, wd):
     labels = torch.FloatTensor(labels)
