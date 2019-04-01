@@ -13,6 +13,7 @@ The idea behind the latest approaches is to learn a mapping that embeds each nod
 Throughout the repository :
 * We'll use Node2Vec, GCN, SAGEConv and GAT   to highlight the importance of encoding graph structural information together with features in order to achieve a good vertex classifcation.
 * We'll show that in this specific settings <b>the dataset is not good enough to create a good predictor</b> and that it is possibile to achieve the same performance with statistic methods ( not taking into account the graph and the feature )
+* We must not forget that Machine Learning is not magic!
 
 ## Not enough?
 Our thinking process is carefully explained in the main jupyter notebook, you should go take a look.
